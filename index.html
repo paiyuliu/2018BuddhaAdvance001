@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">-->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--    <script src="../jQuery/jquery-3.2.1.min.js"></script>-->
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta charset="UTF-8">
+    <title>聽音檔選擇</title>
+</head>
+
+<body>
+
+    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
+        請選擇音檔
+    </div>
+    <br>
+
+    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
+        <select name="playList0" id="playList0">
+            <option value="0">請選擇</option>
+            <option value="1">001~020</option>
+            <option value="2">021~040</option>
+            <option value="3">041~060</option>
+            <option value="4">061~080</option>
+            <option value="5">081~100</option>
+            <option value="6">101~120</option>
+            <option value="7">121~140</option>
+            <option value="8">141~160</option>
+        </select>
+
+    </div>
+    <br>
+
+
+    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
+        <select name="playList1" id="playList1" style="display:none;">
+            <option value="0">請選擇</option>
+        </select>
+    </div>
+    <br>
+    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
+        <audio controls="false" class="audio" id="audioSource">
+           <source src="http://bwglobal.inetfile.org/LR-mp3/001-160/001A.mp3" type="audio/mpeg"/>
+        </audio>
+
+    </div>
+
+
+    <br>
+
+    <div class="col-md-12 col-sm-12">
+        <button id="btn2" class="btn" type="button" onclick='setTime(getElementById("time11").value,getElementById("time12").value);'>
+            <span class="ui-button-text">
+                設定
+            </span>
+        </button>
+        <div class="form-group">
+            <label>第一段時間:</label>
+            <table>
+                <tr>
+                    <td><input type="number" class="form-control" id="time11" value="00" min="0" max="59"></td>
+                    <td>分:</td>
+                    <td><input type="number" class="form-control" id="time12" value="01" min="0" max="59"></td>
+                    <td>秒</td>
+                </tr>
+            </table>
+        </div>
+        <!--    <button class="btn" type="button" onclick='playVideo();'><span class="ui-button-text">My Text</span></button>-->
+        <br>
+        <button id="btn2" class="btn" type="button" onclick='setTime(getElementById("time21").value,getElementById("time22").value);'>
+            <span class="ui-button-text">
+                設定
+            </span>
+        </button>
+        <div class="form-group">
+            <label>第二段時間:</label>
+            <table>
+                <tr>
+                    <td><input type="number" class="form-control" id="time21" value="10" min="0" max="59"></td>
+                    <td>分:</td>
+                    <td><input type="number" class="form-control" id="time22" value="01" min="0" max="59"></td>
+                    <td>秒</td>
+                </tr>
+            </table>
+
+        </div>
+        <br>
+        <button id="btn3" class="btn" type="button" onclick='setTime(getElementById("time31").value,getElementById("time32").value);'>
+            <span class="ui-button-text">
+                設定
+            </span>
+        </button>
+        <div class="form-group">
+            <label>第三段時間:</label>
+            <table>
+                <tr>
+                    <td><input type="number" class="form-control" id="time31" value="20" min="0" max="59"></td>
+                    <td>分:</td>
+                    <td><input type="number" class="form-control" id="time32" value="01" min="0" max="59"></td>
+                    <td>秒</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        var list0 = document.getElementById("playList0");
+        list0.onchange = function(event) {
+            // console.log(list0.value);
+            // console.log(list0[1].text);
+            changePlayListContent(list0.selectedIndex);
+        }
+
+        var list1 = document.getElementById("playList1");
+        list1.onchange = function() {
+
+
+            var audio = document.getElementById("audioSource");
+            //            audio.innerHTML = ""; // var source = document.createElement("source"); // source.src = list1[list1.selectedIndex].value; // source.type = "audio/mpeg"; // audio.currentTime = 0; // // audio.appendChild(source);
+
+            //change the source
+            audio.setAttribute('src', list1[list1.selectedIndex].value);
+
+        }
+
+
+        function changePlayListContent(playList0Index) {
+            var list1 = document.getElementById("playList1");
+            list1.innerHTML = "";
+
+            var option0 = document.createElement("option");
+            option0.value = "";
+            option0.text = "請選擇";
+
+
+            var endCount = playList0Index * 20;
+            var bgnCoount = endCount - 19;
+            for (var i = bgnCoount; i <= endCount; i++) {
+                // console.log(i);
+
+                var textA = "00" + i + "A";
+                var textB = "00" + i + "B";
+                textA = textA.substring(textA.length - 4, textA.length);
+                textB = textB.substring(textB.length - 4, textB.length);
+                var valueA = "http://bwglobal.inetfile.org/LR-mp3/001-160/" + textA;
+                var valueB = "http://bwglobal.inetfile.org/LR-mp3/001-160/" + textB;
+
+
+                var optionA = document.createElement("option");
+                optionA.value = valueA;
+                optionA.text = textA;
+                list1.appendChild(optionA);
+
+                var optionB = document.createElement("option");
+                optionB.value = valueB;
+                optionB.text = textB;
+                list1.appendChild(optionB);
+            }
+
+            list1.style.display = "inline";
+
+        }
+
+        function setTime(minutes, seconds) {
+            var vid = document.getElementById("audioSource");
+            vid.currentTime = parseInt(minutes) * 60 + parseInt(seconds);
+        }
+
+    </script>
+
+
+</body>
+
+</html>
