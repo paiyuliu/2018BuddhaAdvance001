@@ -3,128 +3,116 @@
 
 <head>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">-->
-    <!-- jQuery library -->
+    <link rel="stylesheet" href="./bootstrap-4/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!--    <script src="../jQuery/jquery-3.2.1.min.js"></script>-->
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <meta charset="UTF-8">
+    <script src="./bootstrap-4/js/jquery-3.2.1.min.js"></script>
+    <script src="./bootstrap-4/js/bootstrap.min.js"></script>
+    <script src="./rabbit-lyrics/rabbit-lyrics.js"></script>
+    
+    <meta charset="UTF-8"/>
+    <style>
+        body *{
+            font-family:Microsoft JhengHei;font-size: large;
+        }
+    </style>
     <title>聽音檔選擇</title>
 </head>
 
 <body>
 
-    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
-        請選擇音檔
-    </div>
-    <br>
-    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col col-6">
+                <div class="col-md-12 col-sm-12">
+                    請選擇音檔
+                </div>
+                <div class="col col-12 col-md-6">
+                    <select name="playList0" id="playList0">
+                        <option value="0">請選擇</option>
+                    </select>
+                    <select  name="playList1" id="playList1">
+                        <option value="0">請選擇</option>
+                    </select>
+                </div>
+                
+                <div class="col col-12 col-md-3">
+                    <audio controls="false" class="audio" id="audioSource">
+                        <source id="mp3Source" src="http://bwglobal.inetfile.org/LR-mp3/001-160/001A.mp3" type="audio/mpeg" />
+                    </audio>
+                </div>
+                <br>
+            
+                <div class="col-md-12 col-sm-12">
+                    <button id="btn2" class="btn" type="button"
+                        onclick='setTime(document.getElementById("time11").value,document.getElementById("time12").value);'>
+                        <span class="ui-button-text">
+                            設定
+                        </span>
+                    </button>
+                    <div class="form-group">
+                        <label>第一段時間:</label>
+                        <table>
+                            <tr>
+                                <td><input type="number" class="form-control" id="time11" value="00" min="0" max="59"></td>
+                                <td>分:</td>
+                                <td><input type="number" class="form-control" id="time12" value="01" min="0" max="59"></td>
+                                <td>秒</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--    <button class="btn" type="button" onclick='playVideo();'><span class="ui-button-text">My Text</span></button>-->
+                    <br>
+                    <button id="btn2" class="btn" type="button"
+                        onclick='setTime(document.getElementById("time21").value,document.getElementById("time22").value);'>
+                        <span class="ui-button-text">
+                            設定
+                        </span>
+                    </button>
+                    <div class="form-group">
+                        <label>第二段時間:</label>
+                        <table>
+                            <tr>
+                                <td><input type="number" class="form-control" id="time21" value="10" min="0" max="59"></td>
+                                <td>分:</td>
+                                <td><input type="number" class="form-control" id="time22" value="01" min="0" max="59"></td>
+                                <td>秒</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div id="lyricDiv" class="col col-6">
+                <!--class="rabbit-lyrics"-->
+                <div id="abc"  data-media="#audio-2" data-height="150" data-alignment="left" style="background-color: black; color:peru;">
+                </div>
 
-    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
-        <select name="playList0" id="playList0">
-            <option value="0">請選擇</option>
-        </select>
-
-    </div>
-    <br>
-    <br>
-
-
-    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
-        <select name="playList1" id="playList1">
-            <option value="0">請選擇</option>
-        </select>
-    </div>
-    <br>
-    <br>
-    <div class="col-md-12 col-sm-12" style="font-family:Microsoft JhengHei;font-size: large;">
-        <audio controls="false" class="audio" id="audioSource">
-            <source id="mp3Source" src="http://bwglobal.inetfile.org/LR-mp3/001-160/001A.mp3" type="audio/mpeg" />
-        </audio>
-
-    </div>
-
-
-    <br>
-
-    <div class="col-md-12 col-sm-12">
-        <button id="btn2" class="btn" type="button"
-            onclick='setTime(getElementById("time11").value,getElementById("time12").value);'>
-            <span class="ui-button-text">
-                設定
-            </span>
-        </button>
-        <div class="form-group">
-            <label>第一段時間:</label>
-            <table>
-                <tr>
-                    <td><input type="number" class="form-control" id="time11" value="00" min="0" max="59"></td>
-                    <td>分:</td>
-                    <td><input type="number" class="form-control" id="time12" value="01" min="0" max="59"></td>
-                    <td>秒</td>
-                </tr>
-            </table>
-        </div>
-        <!--    <button class="btn" type="button" onclick='playVideo();'><span class="ui-button-text">My Text</span></button>-->
-        <br>
-        <button id="btn2" class="btn" type="button"
-            onclick='setTime(getElementById("time21").value,getElementById("time22").value);'>
-            <span class="ui-button-text">
-                設定
-            </span>
-        </button>
-        <div class="form-group">
-            <label>第二段時間:</label>
-            <table>
-                <tr>
-                    <td><input type="number" class="form-control" id="time21" value="10" min="0" max="59"></td>
-                    <td>分:</td>
-                    <td><input type="number" class="form-control" id="time22" value="01" min="0" max="59"></td>
-                    <td>秒</td>
-                </tr>
-            </table>
-
-        </div>
-        <br>
-        <button id="btn3" class="btn" type="button"
-            onclick='setTime(getElementById("time31").value,getElementById("time32").value);'>
-            <span class="ui-button-text">
-                設定
-            </span>
-        </button>
-        <div class="form-group">
-            <label>第三段時間:</label>
-            <table>
-                <tr>
-                    <td><input type="number" class="form-control" id="time31" value="20" min="0" max="59"></td>
-                    <td>分:</td>
-                    <td><input type="number" class="form-control" id="time32" value="01" min="0" max="59"></td>
-                    <td>秒</td>
-                </tr>
-            </table>
+            </div>
+            
+            
         </div>
     </div>
+
+    
 
 
 
 
 
     <script>
-        function SetAudioSource(audioSource) {
+        var SetAudioSource=function (audioSource) {
             var source = document.getElementById('audioSource');
             var mp3Source = document.getElementById('mp3Source');
             mp3Source.src = audioSource;
             source.load(); //call this to just preload the audio without playing
             source.play(); //call this to play the song right away
-        }
+        };
 
-        function setTime(minutes, seconds) {
+        var setTime = function(minutes, seconds) {
             var vid = document.getElementById("audioSource");
             vid.currentTime = parseInt(minutes) * 60 + parseInt(seconds);
-        }
+        };
+
 
         $(document).ready(function () {
             $.getJSON({
@@ -132,7 +120,7 @@
                 success: function (data) {
 
                     for (var key in data) {
-                        console.log(' name=' + key + ' value=' + data[key]);
+                        //console.log(' name=' + key + ' value=' + data[key]);
                         $option = $("<option />").text(key).val(key);
                         $("#playList0").append($option);
                     } // end of for (var key in data)
@@ -163,18 +151,21 @@
                     });
 
                     $("#playList1").on('change', function () {
-                        console.log(this.value);
+                        
                         let audioSource = this.value;
                         // 設定音檔
-                        //$("#mp3Source").attr("src",audioSource);
                         SetAudioSource(audioSource);
+
                     });
 
                 }
             });
 
+
+
         });
     </script>
+    
 
 
 </body>
