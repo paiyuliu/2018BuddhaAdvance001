@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="./bootstrap-4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap-4/css/bootstrap.darkly.min.css">
+    <script src="./bootstrap-4/js/jquery-3.2.1.min.js"></script>
+    <script src="./bootstrap-4/js/bootstrap.min.js"></script>
+    
+    <meta charset="UTF-8"/>
+    <style>
+        body *{
+            font-family:Microsoft JhengHei;
+            font-size: 2rem;
+        }
+    </style>
+    <title>看手抄</title>
+</head>
+
+<body>
+    
+    <div style="height: 3rem;">&nbsp;</div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                請選擇音檔
+            </div>
+            <div class="col col-2">
+                <select name="playList0" id="playList0" class="float-left" style="background-color: darkslategray;width: 10rem;">
+                    <option value="0">請選擇</option>
+                </select>
+            </div>
+            <div class="col col-1">
+                <select  name="playList1" id="playList1" class="float-left" style="background-color: darkslategray;width: 8rem;">
+                    <option value="0">請選擇</option>
+                </select>
+            </div>
+            
+            <div style="height: 5rem;">&nbsp;</div>
+            <div id="audioDiv" class="col col-12">
+                <!--
+                <audio controls="false" class="audio" id="audioSource">
+                    <source id="mp3Source" src="#" type="audio/mpeg" />
+                </audio>
+                -->
+            </div>
+
+            <div class="col col-6 float-left">
+                
+                <div class="form-group">
+                    <label>第一段時間:</label>
+                    <table>
+                        <tr>
+                            <td><input type="number" class="form-control" id="time11" value="00" min="0" max="59"></td>
+                            <td>分:</td>
+                            <td><input type="number" class="form-control" id="time12" value="01" min="0" max="59"></td>
+                            <td>秒</td>
+                            <td>
+                                <button id="btn2" class="btn btn-dark" type="button"
+                                onclick='setTime(document.getElementById("time11").value,document.getElementById("time12").value);'>
+                                <span class="ui-button-text">
+                                    設定
+                                </span>
+                            </button>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+                <!--    <button class="btn" type="button" onclick='playVideo();'><span class="ui-button-text">My Text</span></button>-->
+                <br/>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div id="lyricDiv" class="col col-12">
+                字幕尚未載入
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var SetAudioSource=function (audioSource,jsonTxtFileName) {
+            //var source = document.getElementById('audioSource');
+            //var mp3Source = document.getElementById('mp3Source');
+
+            let $audio=$("<audio />").attr({"controls":"false"
+                                           ,"class":"audio"
+                                           ,"id":"audioSource"});
+            let $source=$("<source />").attr({"id":"mp3Source"
+                                             ,"type":"audio/mpeg"
+                                             ,"src":audioSource})
+                                       .appendTo($audio);
+            $("#audioDiv").empty()
+            $audio.appendTo("#audioDiv");
+
+            //mp3Source.src = audioSource;
+            let source = document.getElementById('audioSource');
+            source.load(); //call this to just preload the audio without playing
+            source.play(); //call this to play the song right away
+
+            let mp3Source = document.getElementById('mp3Source');
+
+            listenTimeChange(jsonTxtFileName,source);
+
+        };
+
+        var setTime = function(minutes, seconds) {
+            var vid = document.getElementById("audioSource");
+            vid.currentTime = parseInt(minutes) * 60 + parseInt(seconds);
+
+        };
+
+        var listenTimeChange = function(jsonFile,vid){
+            // Get the video element with id="myVideo"
+            let fileName = jsonFile.toLowerCase()+".json"
+        
+            $.getJSON({
+                url:"./text/"+fileName,
+                success:function(data){
+                    $("#lyricDiv").empty();
+                    $.each(data, function(k, v) {
+                        $("<p/>")
+                        .text(v)
+                        .appendTo("#lyricDiv");
+                    });
+                    return ;
+                    let spanCurrentTime = "0";
+                    //let vid = document.getElementById("mp3Source");
+                    //console.log(vid);
+                    // Attach a timeupdate event to the video element, and execute a function if the current playback position has changed
+                    vid.addEventListener("timeupdate", function(){
+                        
+                        let filterTimeData = timeStamp.filter(function(item){
+                            return item < vid.currentTime;
+                        });
+
+                        if(filterTimeData.length){
+                            let idx = filterTimeData.length - 1;
+                            let sameTimeString = spanCurrentTime.localeCompare(timeStamp[idx]);
+                            
+                            if(sameTimeString){
+                                spanCurrentTime = timeStamp[idx];
+                                $("#lyricDiv").text(text[idx])
+                            }
+                        }
+
+                    });
+
+                }
+            });
+        };
+
+
+        $(document).ready(function () {
+            $.getJSON({
+                url: "audioSource.json",
+                success: function (data) {
+
+                    for (var key in data) {
+                        $option = $("<option />").text(key).val(key);
+                        $("#playList0").append($option);
+                    } // end of for (var key in data)
+
+                    $('#playList0').on('change', function () {
+                        let audios = data[this.value];
+                        $("#playList1").empty();
+
+                        let count = 0;
+                        for (var key in audios) {
+                            $option = $("<option />")
+                                .text(key)
+                                .val(audios[key]);
+
+                            if (count == 0) {
+                                $option[0].selected = true;
+                                let audioSource = $option.val();
+                                // 設定音檔
+                                //$("#mp3Source").attr("src",audioSource);
+                                SetAudioSource(audioSource,key);
+                            }
+
+                            count = count + 1;
+
+                            $("#playList1").append($option);
+
+                        }
+                    });
+
+                    $("#playList1").on('change', function () {
+                        let audioSource = $("#playList1").val(); //獲取選中記錄的value值
+                        let jsonFileName = $("#playList1 option:selected").text(); //獲取選中記錄的text值
+                        //console.log(jsonFileName);
+                        // 設定音檔
+                        $("#lyricDiv").text("字幕尚未載入!!");
+                        SetAudioSource(audioSource,jsonFileName);
+                        
+
+                    });
+
+                }
+            });
+
+
+
+        });
+    
+    </script>
+    
+
+
+</body>
+
+</html>
